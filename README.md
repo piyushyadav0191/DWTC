@@ -2,6 +2,9 @@
 
 A command-line daily work tracker tool built using Golang. This tool helps you manage your daily tasks efficiently by allowing you to add, delete, list, and mark tasks as complete.
 
+![demo](https://github.com/piyushyadav0191/Daily-Work-Tracker-CLI/assets/84402719/5e30a450-a0ff-47ae-9f24-bf9b17859f84)
+
+
 ## Prerequisites
 
 - Golang installed on your system.
