@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 
 	todo "github.com/piyushyadav0191/cmd-todo"
 )
@@ -30,9 +34,13 @@ func main() {
 
 	switch {
 	case *add:
-		todos.Add("Sample Todo")
-		err := todos.Store(todoFile)
-
+	task, err := getInput(os.Stdin, flag.Args()...)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+	todos.Add(task)
+err = todos.Store(todoFile)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
@@ -69,4 +77,22 @@ func main() {
 		fmt.Fprintln(os.Stdout, "Invalid command")
 		os.Exit(0)
 	}
+}
+
+func getInput(r io.Reader, args ...string) (string, error){
+	if len(args) > 0 {
+		return strings.Join(args, " "), nil
+	}
+	scanner := bufio.NewScanner(r)
+	scanner.Scan()
+	if err := scanner.Err(); err != nil {
+		return "", nil
+	}
+	text := scanner.Text()
+
+	if len(text) == 0 {
+		return "", errors.New("Empty todo is not allowed")
+	}
+
+	return text, nil
 }
